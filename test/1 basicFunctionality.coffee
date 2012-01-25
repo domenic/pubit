@@ -65,6 +65,12 @@ describe "Publisher/emitter under normal usage", ->
 
             sinon.assert.notCalled(listener)
 
+        it "should not call the subscribing listener when the event is blanket-unsubscribed, then published", ->
+            emitter.off("eventName")
+            publisher.publish("eventName")
+
+            sinon.assert.notCalled(listener)
+
     describe "when an event has been subscribed to by two different listeners", ->
         listener1 = null
         listener2 = null
