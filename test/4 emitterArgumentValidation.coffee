@@ -11,12 +11,12 @@ describe "Emitter argument validation", ->
         publisher = new Publisher()
         emitter = publisher.emitter
 
-    describe ".on(eventName, handler)", ->
+    describe ".on(eventName, listener)", ->
         it "throws an error when give a string and a number", ->
-            expect(-> emitter.on("eventName", 5)).to.throwArgumentError("handler", "function")
+            expect(-> emitter.on("eventName", 5)).to.throwArgumentError("listener", "function")
 
         it "throws an error when give a string and null", ->
-            expect(-> emitter.on("eventName", null)).to.throwArgumentError("handler", "function")
+            expect(-> emitter.on("eventName", null)).to.throwArgumentError("listener", "function")
 
         it "throws an error when give null and a function", ->
             expect(-> emitter.on(null, ->)).to.throwArgumentError("eventName", "string")
@@ -34,12 +34,12 @@ describe "Emitter argument validation", ->
         it "throws an error when given a string by itself", ->
             expect(-> emitter.on("eventName")).to.throwArgumentError("hash", "string-to-function hash")
 
-    describe ".off(eventName, handler)", ->
+    describe ".off(eventName, listener)", ->
         it "throws an error when give a string and a number", ->
-            expect(-> emitter.off("eventName", 5)).to.throwArgumentError("handler", "function")
+            expect(-> emitter.off("eventName", 5)).to.throwArgumentError("listener", "function")
 
         it "throws an error when give a string and null", ->
-            expect(-> emitter.off("eventName", null)).to.throwArgumentError("handler", "function")
+            expect(-> emitter.off("eventName", null)).to.throwArgumentError("listener", "function")
 
         it "throws an error when give null and a function", ->
             expect(-> emitter.off(null, ->)).to.throwArgumentError("eventName", "string")

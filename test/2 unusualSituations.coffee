@@ -12,55 +12,55 @@ describe "Publisher/emitter in unusual situations", ->
         publisher = new Publisher()
         emitter = publisher.emitter
 
-    describe "when an event has been subscribed to by two normal handlers plus a handler that removes itself", ->
-        normalHandler1 = null
-        normalHandler2 = null
-        selfRemovingHandler = null
+    describe "when an event has been subscribed to by two normal listeners plus a listener that removes itself", ->
+        normalListener1 = null
+        normalListener2 = null
+        selfRemovingListener = null
 
         beforeEach ->
-            normalHandler1 = sinon.spy()
-            normalHandler2 = sinon.spy()
-            selfRemovingHandler = sinon.spy(-> emitter.off("eventName", selfRemovingHandler))
+            normalListener1 = sinon.spy()
+            normalListener2 = sinon.spy()
+            selfRemovingListener = sinon.spy(-> emitter.off("eventName", selfRemovingListener))
 
-            emitter.on("eventName", normalHandler1)
-            emitter.on("eventName", selfRemovingHandler)
-            emitter.on("eventName", normalHandler2)
+            emitter.on("eventName", normalListener1)
+            emitter.on("eventName", selfRemovingListener)
+            emitter.on("eventName", normalListener2)
 
-        it "should call all handlers when the event is published once", ->
+        it "should call all listeners when the event is published once", ->
             publisher.publish("eventName")
 
-            sinon.assert.calledOnce(normalHandler1)
-            sinon.assert.calledOnce(normalHandler2)
-            sinon.assert.calledOnce(selfRemovingHandler)
+            sinon.assert.calledOnce(normalListener1)
+            sinon.assert.calledOnce(normalListener2)
+            sinon.assert.calledOnce(selfRemovingListener)
 
-        it "should only call the normal handlers when the event is published a second time", ->
+        it "should only call the normal listeners when the event is published a second time", ->
             publisher.publish("eventName")
             publisher.publish("eventName")
 
-            normalHandler1.callCount.should.equal(2)
-            normalHandler2.callCount.should.equal(2)
-            selfRemovingHandler.callCount.should.equal(1)
+            normalListener1.callCount.should.equal(2)
+            normalListener2.callCount.should.equal(2)
+            selfRemovingListener.callCount.should.equal(1)
 
-    describe "when an event has been subscribed to by two normal handlers plus a handler that throws an error", ->
-        normalHandler1 = null
-        normalHandler2 = null
-        errorThrowingHandler = null
+    describe "when an event has been subscribed to by two normal listeners plus a listener that throws an error", ->
+        normalListener1 = null
+        normalListener2 = null
+        errorThrowingListener = null
 
         beforeEach ->
-            normalHandler1 = sinon.spy()
-            normalHandler2 = sinon.spy()
-            errorThrowingHandler = sinon.spy(-> throw fakeError)
+            normalListener1 = sinon.spy()
+            normalListener2 = sinon.spy()
+            errorThrowingListener = sinon.spy(-> throw fakeError)
 
-            emitter.on("eventName", normalHandler1)
-            emitter.on("eventName", errorThrowingHandler)
-            emitter.on("eventName", normalHandler2)
+            emitter.on("eventName", normalListener1)
+            emitter.on("eventName", errorThrowingListener)
+            emitter.on("eventName", normalListener2)
 
-        it "should call all handlers when the event is published, despite the error", ->
+        it "should call all listeners when the event is published, despite the error", ->
             publisher.publish("eventName")
             
-            sinon.assert.calledOnce(normalHandler1)
-            sinon.assert.calledOnce(normalHandler2)
-            sinon.assert.calledOnce(errorThrowingHandler)
+            sinon.assert.calledOnce(normalListener1)
+            sinon.assert.calledOnce(normalListener2)
+            sinon.assert.calledOnce(errorThrowingListener)
 
         it "should deliver the original error to the subscriber error callback when the event is published", ->
             onSubscriberError = sinon.spy()
@@ -71,17 +71,17 @@ describe "Publisher/emitter in unusual situations", ->
             sinon.assert.calledWithExactly(onSubscriberError, fakeError)
 
     it 'gracefully deals with events named "hasOwnProperty"', ->
-        handler = sinon.spy()
+        listener = sinon.spy()
 
-        emitter.on("hasOwnProperty", handler)
+        emitter.on("hasOwnProperty", listener)
         publisher.publish("hasOwnProperty")
 
-        sinon.assert.calledOnce(handler)
+        sinon.assert.calledOnce(listener)
 
     it 'gracefully deals with events named "__proto__"', ->
-        handler = sinon.spy()
+        listener = sinon.spy()
 
-        emitter.on("__proto__", handler)
+        emitter.on("__proto__", listener)
         publisher.publish("__proto__")
 
-        sinon.assert.calledOnce(handler)
+        sinon.assert.calledOnce(listener)
