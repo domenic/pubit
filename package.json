@@ -1,0 +1,38 @@
+{
+  "name": "pubit",
+  "description": "Responsible publish-subscribe. Hide the publisher and expose an emitter.",
+  "keywords": [
+    "pubsub",
+    "pub/sub",
+    "eventemitter",
+    "events"
+  ],
+  "version": "0.0.0",
+  "author": "Domenic Denicola <domenic@domenicdenicola.com> (http://domenicdenicola.com)",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/DomenicDenicola/pubit"
+  },
+  "bugs": {
+    "url": "http://github.com/DomenicDenicola/pubit/issues"
+  },
+  "directories": {
+    "lib": "./lib"
+  },
+  "main": "./lib/pubit.js",
+  "scripts": {
+    "test": ".\\node_modules\\.bin\\mocha"
+  },
+  "engines": {
+    "node": "*"
+  },
+  "dependencies": {
+    "dict": "1"
+  },
+  "devDependencies": {
+    "coffee-script": "*",
+    "mocha": "*",
+    "chai": "*",
+    "sinon": "*"
+  }
+}
