@@ -16,7 +16,7 @@ describe "Publisher/emitter under normal usage", ->
 
         beforeEach ->
             handler = sinon.spy()
-            emitter.subscribe("eventName", handler)
+            emitter.on("eventName", handler)
 
         it "should call the subscribing handler when the event is published", ->
             publisher.publish("eventName")
@@ -34,7 +34,7 @@ describe "Publisher/emitter under normal usage", ->
             sinon.assert.notCalled(handler)
 
         it "should not call the handler when publishing after unsubscribing from the event", ->
-            emitter.unsubscribe("eventName", handler)
+            emitter.off("eventName", handler)
             publisher.publish("eventName")
 
             sinon.assert.notCalled(handler)
@@ -44,8 +44,8 @@ describe "Publisher/emitter under normal usage", ->
 
         beforeEach ->
             handler = sinon.spy()
-            emitter.subscribe("eventName", handler)
-            emitter.subscribe("eventName", handler)
+            emitter.on("eventName", handler)
+            emitter.on("eventName", handler)
 
         it "should call the subscribing handler twice when the event is published", ->
             publisher.publish("eventName")
@@ -53,14 +53,14 @@ describe "Publisher/emitter under normal usage", ->
             handler.callCount.should.equal(2)
 
         it "should call the subscribing handler once when the event is unsubscribed from once, then published", ->
-            emitter.unsubscribe("eventName", handler)
+            emitter.off("eventName", handler)
             publisher.publish("eventName")
 
             handler.callCount.should.equal(1)
 
         it "should not call the subscribing handler when the event is unsubscribed from twice, then published", ->
-            emitter.unsubscribe("eventName", handler)
-            emitter.unsubscribe("eventName", handler)
+            emitter.off("eventName", handler)
+            emitter.off("eventName", handler)
             publisher.publish("eventName")
 
             sinon.assert.notCalled(handler)
@@ -73,8 +73,8 @@ describe "Publisher/emitter under normal usage", ->
             handler1 = sinon.spy()
             handler2 = sinon.spy()
 
-            emitter.subscribe("eventName", handler1)
-            emitter.subscribe("eventName", handler2)
+            emitter.on("eventName", handler1)
+            emitter.on("eventName", handler2)
 
         it "should call both handlers when the event is published", ->
             publisher.publish("eventName")
@@ -83,14 +83,14 @@ describe "Publisher/emitter under normal usage", ->
             sinon.assert.calledOnce(handler2)
         
         it "should call only one handler when the other unsubscribes, then the event is published", ->
-            emitter.unsubscribe("eventName", handler1)
+            emitter.off("eventName", handler1)
             publisher.publish("eventName")
 
             sinon.assert.notCalled(handler1)
             sinon.assert.calledOnce(handler2)
 
         it "should call neither handler when the event is blanket-unsubscribed, then published", ->
-            emitter.unsubscribe("eventName")
+            emitter.off("eventName")
             publisher.publish("eventName")
 
             sinon.assert.notCalled(handler1)
@@ -104,7 +104,7 @@ describe "Publisher/emitter under normal usage", ->
                 event1: sinon.spy()
                 event2: sinon.spy()
                 event3: sinon.spy()
-            emitter.subscribe(hash)
+            emitter.on(hash)
 
         it "publishes events correctly", ->
             publisher.publish("event1")
@@ -115,7 +115,7 @@ describe "Publisher/emitter under normal usage", ->
             sinon.assert.notCalled(hash.event3)
 
         it "does not publish events when they are mass-unsubscribed using the same hash", ->
-            emitter.unsubscribe(hash)
+            emitter.off(hash)
 
             publisher.publish("event1")
             publisher.publish("event2")

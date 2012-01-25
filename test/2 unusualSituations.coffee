@@ -20,11 +20,11 @@ describe "Publisher/emitter in unusual situations", ->
         beforeEach ->
             normalHandler1 = sinon.spy()
             normalHandler2 = sinon.spy()
-            selfRemovingHandler = sinon.spy(-> emitter.unsubscribe("eventName", selfRemovingHandler))
+            selfRemovingHandler = sinon.spy(-> emitter.off("eventName", selfRemovingHandler))
 
-            emitter.subscribe("eventName", normalHandler1)
-            emitter.subscribe("eventName", selfRemovingHandler)
-            emitter.subscribe("eventName", normalHandler2)
+            emitter.on("eventName", normalHandler1)
+            emitter.on("eventName", selfRemovingHandler)
+            emitter.on("eventName", normalHandler2)
 
         it "should call all handlers when the event is published once", ->
             publisher.publish("eventName")
@@ -51,9 +51,9 @@ describe "Publisher/emitter in unusual situations", ->
             normalHandler2 = sinon.spy()
             errorThrowingHandler = sinon.spy(-> throw fakeError)
 
-            emitter.subscribe("eventName", normalHandler1)
-            emitter.subscribe("eventName", errorThrowingHandler)
-            emitter.subscribe("eventName", normalHandler2)
+            emitter.on("eventName", normalHandler1)
+            emitter.on("eventName", errorThrowingHandler)
+            emitter.on("eventName", normalHandler2)
 
         it "should call all handlers when the event is published, despite the error", ->
             publisher.publish("eventName")
@@ -73,7 +73,7 @@ describe "Publisher/emitter in unusual situations", ->
     it 'gracefully deals with events named "hasOwnProperty"', ->
         handler = sinon.spy()
 
-        emitter.subscribe("hasOwnProperty", handler)
+        emitter.on("hasOwnProperty", handler)
         publisher.publish("hasOwnProperty")
 
         sinon.assert.calledOnce(handler)
@@ -81,7 +81,7 @@ describe "Publisher/emitter in unusual situations", ->
     it 'gracefully deals with events named "__proto__"', ->
         handler = sinon.spy()
 
-        emitter.subscribe("__proto__", handler)
+        emitter.on("__proto__", handler)
         publisher.publish("__proto__")
 
         sinon.assert.calledOnce(handler)
