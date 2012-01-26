@@ -23,6 +23,28 @@ describe "Publisher options", ->
 
             sinon.assert.calledWith(onListenerError, error)
 
+    describe "async", ->
+        beforeEach ->
+            publisher = new Publisher(async: true)
+            emitter = publisher.emitter
+
+        it "should result in events being published asynchronously", (next) ->
+            listener1 = sinon.spy()
+            listener2 = sinon.spy()
+            emitter.on("event1", listener1)
+            emitter.on("event2", listener2)
+
+            publisher.publish("event1")
+            publisher.publish("event2")
+
+            sinon.assert.notCalled(listener1)
+            sinon.assert.notCalled(listener2)
+
+            process.nextTick ->
+                sinon.assert.called(listener1)
+                sinon.assert.called(listener2)
+                next()
+
     it "should be validated", ->
         expect(-> new Publisher(null)).to.throw(TypeError)
         expect(-> new Publisher(5)).to.throw(TypeError)
