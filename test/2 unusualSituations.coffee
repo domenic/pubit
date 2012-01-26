@@ -6,7 +6,6 @@ Publisher = require("../lib/pubit").Publisher
 describe "Publisher/emitter in unusual situations", ->
     publisher = null
     emitter = null
-    fakeError = new Error("OMG it's an error")
 
     beforeEach ->
         publisher = new Publisher()
@@ -49,7 +48,7 @@ describe "Publisher/emitter in unusual situations", ->
         beforeEach ->
             normalListener1 = sinon.spy()
             normalListener2 = sinon.spy()
-            errorThrowingListener = sinon.spy(-> throw fakeError)
+            errorThrowingListener = sinon.spy(-> throw new Error)
 
             emitter.on("eventName", normalListener1)
             emitter.on("eventName", errorThrowingListener)
@@ -61,14 +60,6 @@ describe "Publisher/emitter in unusual situations", ->
             sinon.assert.calledOnce(normalListener1)
             sinon.assert.calledOnce(normalListener2)
             sinon.assert.calledOnce(errorThrowingListener)
-
-        it "should deliver the original error to the subscriber error callback when the event is published", ->
-            onSubscriberError = sinon.spy()
-            publisher.setSubscriberErrorCallback(onSubscriberError)
-
-            publisher.publish("eventName")
-
-            sinon.assert.calledWithExactly(onSubscriberError, fakeError)
 
     it 'gracefully deals with events named "hasOwnProperty"', ->
         listener = sinon.spy()
