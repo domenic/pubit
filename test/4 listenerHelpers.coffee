@@ -72,6 +72,43 @@ describe "Listener-creating helpers", ->
 
             sinon.assert.calledWithExactly(aggregateListener, ["A"])
 
+        describe "with the asap parameter set to true", ->
+            beforeEach ->
+                throttledListener = pubit.throttledListener(aggregateListener, 100, true)
+
+            it "should call the aggregate listener on the next turn with the first value", (next) ->
+                throttledListener(1)
+                
+                # Should not be called synchronously, for consistency: throttledListener always returns a function that
+                # executes in a future turn of the event loop. It also allows us to aggregate all values that happen in
+                # this initial turn, as shown in the next test.
+                sinon.assert.notCalled(aggregateListener)
+
+                # After a turn of the event loop, it's been called.
+                process.nextTick ->
+                    sinon.assert.calledWithExactly(aggregateListener, [1])
+                    next()
+
+            it "should call the aggregate listener once with all initial values, then later as usual", (next) ->
+                throttledListener(1)
+                throttledListener(2)
+                throttledListener(3)
+
+                sinon.assert.notCalled(aggregateListener)
+
+                process.nextTick ->
+                    sinon.assert.calledWithExactly(aggregateListener, [1, 2, 3])
+
+                    throttledListener("A")
+                    clock.tick(20)
+                    throttledListener("B")
+                    clock.tick(20)
+                    throttledListener("C")
+                    clock.tick(61)
+                    sinon.assert.calledWithExactly(aggregateListener, ["A", "B", "C"])
+
+                    next()
+
     describe "debouncedListener", ->
         debouncedListener = null
 
@@ -131,3 +168,40 @@ describe "Listener-creating helpers", ->
             clock.tick(101)
 
             sinon.assert.calledWithExactly(aggregateListener, ["A"])
+
+        describe "with the asap parameter set to true", ->
+            beforeEach ->
+                debouncedListener = pubit.debouncedListener(aggregateListener, 100, true)
+
+            it "should call the aggregate listener on the next turn with the first value", (next) ->
+                debouncedListener(1)
+                
+                # Should not be called synchronously, for consistency: debouncedListener always returns a function that
+                # executes in a future turn of the event loop. It also allows us to aggregate all values that happen in
+                # this initial turn, as shown in the next test.
+                sinon.assert.notCalled(aggregateListener)
+
+                # After a turn of the event loop, it's been called.
+                process.nextTick ->
+                    sinon.assert.calledWithExactly(aggregateListener, [1])
+                    next()
+
+            it "should call the aggregate listener once with all initial values, then later as usual", (next) ->
+                debouncedListener(1)
+                debouncedListener(2)
+                debouncedListener(3)
+
+                sinon.assert.notCalled(aggregateListener)
+
+                process.nextTick ->
+                    sinon.assert.calledWithExactly(aggregateListener, [1, 2, 3])
+
+                    debouncedListener("A")
+                    clock.tick(20)
+                    debouncedListener("B")
+                    clock.tick(20)
+                    debouncedListener("C")
+                    clock.tick(101)
+                    sinon.assert.calledWithExactly(aggregateListener, ["A", "B", "C"])
+
+                    next()
