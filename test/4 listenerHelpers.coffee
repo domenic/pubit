@@ -7,19 +7,23 @@ describe "Listener-creating helpers", ->
     publisher = null
     emitter = null
     clock = null
+    aggregateListener = null
 
     beforeEach ->
         publisher = new pubit.Publisher()
         emitter = publisher.emitter
         clock = sinon.useFakeTimers()
+        aggregateListener = sinon.spy()
     afterEach ->
         clock.restore()
 
     describe "throttledListener", ->
-        it "should be called in a throttled manner", ->
-            aggregateListener = sinon.spy()
+        throttledListener = null
+
+        beforeEach ->
             throttledListener = pubit.throttledListener(aggregateListener, 100)
 
+        it "should be called in a throttled manner", ->
             throttledListener()
             throttledListener()
             throttledListener()
@@ -54,9 +58,6 @@ describe "Listener-creating helpers", ->
             sinon.assert.calledTwice(aggregateListener)
 
         it "should aggregate the arguments of calls made to the throttled listener", ->
-            aggregateListener = sinon.spy()
-            throttledListener = pubit.throttledListener(aggregateListener, 100)
-
             throttledListener(1)
             clock.tick(20)
             throttledListener(2)
@@ -72,10 +73,12 @@ describe "Listener-creating helpers", ->
             sinon.assert.calledWithExactly(aggregateListener, ["A"])
 
     describe "debouncedListener", ->
-        it "should be called in a debounced manner", ->
-            aggregateListener = sinon.spy()
+        debouncedListener = null
+
+        beforeEach ->
             debouncedListener = pubit.debouncedListener(aggregateListener, 100)
 
+        it "should be called in a debounced manner", ->
             debouncedListener()
             debouncedListener()
             debouncedListener()
@@ -115,9 +118,6 @@ describe "Listener-creating helpers", ->
             sinon.assert.calledTwice(aggregateListener)
 
         it "should aggregate the arguments of calls made to the debounced listener", ->
-            aggregateListener = sinon.spy()
-            debouncedListener = pubit.debouncedListener(aggregateListener, 100)
-
             debouncedListener(1)
             clock.tick(99)
             debouncedListener(2)
