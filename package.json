@@ -1,6 +1,6 @@
 {
   "name": "pubit",
-  "description": "Responsible publish/subscribe. Hide the publisher and expose an emitter.",
+  "description": "Responsible publish/subscribe. Hide the event publisher, only exposing the event emitter.",
   "keywords": [
     "pubsub",
     "pub/sub",
