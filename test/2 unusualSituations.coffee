@@ -46,6 +46,9 @@ describe "Publisher/emitter in unusual situations", ->
         errorThrowingListener = null
 
         beforeEach ->
+            publisher = new Publisher(onListenerError: ->)
+            emitter = publisher.emitter
+
             normalListener1 = sinon.spy()
             normalListener2 = sinon.spy()
             errorThrowingListener = sinon.spy(-> throw new Error)
