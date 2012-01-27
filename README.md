@@ -2,6 +2,7 @@ Pubit
 =====
 Responsible publish/subscribe. Hide the event publisher, only exposing the event emitter.
 
+
 Why is this cool?
 -----------------
 
@@ -31,6 +32,7 @@ exports.exit = function (exitCode) {
 
 This module only exports the emitter interface (`on`, `off`, and `onNext`); the publish function is kept private.
 
+
 Aren't you being paranoid?
 --------------------------
 
@@ -41,10 +43,19 @@ But encapsulation isn't about being paranoid. It's about _hiding complexity_: ex
 Pubit is [ポカヨケ][2].
 
 
-API
----
+More docs and examples
+----------------------
 
-Coming soon to a GitHub wiki near you!
+* Check out [a simple example][3] of using pubit for responsible pub/sub.
+* Be sure to check out the [listener helper examples][4] to get a look at a nice feature pubit provides to solve a common use case.
+* If you like that sort of thing, we also have an [API reference][5].
+* Perhaps most educational would be checking out [the unit tests][6]—they're very readable, I promise! Run them with `npm test` if you'd like.
+
+
 
 [1]: https://mail.mozilla.org/pipermail/es-discuss/2011-November/017872.html
 [2]: http://blog.ploeh.dk/2011/05/24/PokayokeDesignFromSmellToFragrance.aspx
+[3]: https://github.com/DomenicDenicola/pubit/wiki/Simple-Example
+[4]: https://github.com/DomenicDenicola/pubit/wiki/Listener-Helper-Examples
+[5]: https://github.com/DomenicDenicola/pubit/wiki/API-Reference
+[6]: https://github.com/DomenicDenicola/pubit/tree/master/test
