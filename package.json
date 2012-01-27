@@ -1,13 +1,13 @@
 {
   "name": "pubit",
-  "description": "Responsible publish-subscribe. Hide the publisher and expose an emitter.",
+  "description": "Responsible publish/subscribe. Hide the publisher and expose an emitter.",
   "keywords": [
     "pubsub",
     "pub/sub",
     "eventemitter",
     "events"
   ],
-  "version": "0.0.0",
+  "version": "1.0.0",
   "author": "Domenic Denicola <domenic@domenicdenicola.com> (http://domenicdenicola.com)",
   "repository": {
     "type": "git",
@@ -30,9 +30,9 @@
     "dict": "1"
   },
   "devDependencies": {
-    "coffee-script": "*",
-    "mocha": "*",
-    "chai": "*",
-    "sinon": "*"
+    "coffee-script": "~1.2.0",
+    "mocha": "~0.10.2",
+    "chai": "~0.2.0",
+    "sinon": "~1.3.1"
   }
 }
