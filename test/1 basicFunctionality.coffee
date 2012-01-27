@@ -23,7 +23,7 @@ describe "Publisher/emitter under normal usage", ->
 
             sinon.assert.calledOnce(listener)
 
-        it "should call the subscribing listener with the supplied arguments when the event is published with arguments", ->
+        it "should call the listener with the supplied arguments when the event is published with arguments", ->
             publisher.publish("eventName", 1, "foo")
             
             sinon.assert.calledWithExactly(listener, 1, "foo")
