@@ -6,7 +6,7 @@ Responsible publish/subscribe. Hide the event publisher, only exposing the event
 Why is this cool?
 -----------------
 
-Most pub/sub frameworks conflate the roll of publisher and emitter. This means that if someone gets ahold of your emitter object, they can not only subscribe to events, but also fake out all other subscribers by emitting an artificial event:
+Most pub/sub frameworks conflate the role of publisher and emitter. This means that if someone gets ahold of your emitter object, they can not only subscribe to events, but also fake out all other subscribers by emitting an artificial event:
 
 ```javascript
 
