@@ -8,14 +8,29 @@ describe "Publisher options", ->
     emitter = null
 
     describe "onListenerError", ->
-        onListenerError = null
+        it "should by default re-throw listeners errors in the next turn of the event loop", (next) ->
+            publisher = new Publisher()
+            emitter = publisher.emitter
 
-        beforeEach ->
+            error = new Error("Boo")
+            emitter.on("eventName", -> throw error)
+
+            onUncaughtException = sinon.spy()
+            originalOnUncaughtException = process.listeners("uncaughtException").pop()
+            process.once("uncaughtException", onUncaughtException)
+
+            publisher.publish("eventName")
+
+            process.nextTick ->
+                process.listeners("uncaughtException").push(originalOnUncaughtException)
+                sinon.assert.calledWith(onUncaughtException, error)
+                next()
+
+        it "should deliver errors thrown by listeners to the supplied callback", ->
             onListenerError = sinon.spy()
             publisher = new Publisher(onListenerError: onListenerError)
             emitter = publisher.emitter
 
-        it "should deliver errors thrown by listeners to the supplied callback", ->
             error = new Error("Boo")
             emitter.on("eventName", -> throw error)
 
