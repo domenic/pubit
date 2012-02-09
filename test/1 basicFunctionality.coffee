@@ -102,6 +102,43 @@ describe "Publisher/emitter under normal usage", ->
             sinon.assert.notCalled(listener1)
             sinon.assert.notCalled(listener2)
 
+    describe "when three events are subscribed to in one call", ->
+        events = ["event1", "event2", "event3"]
+        listener = null
+
+        beforeEach ->
+            listener = sinon.spy()
+            emitter.on(events.join(" "), listener)
+
+        it "publishes the first event correctly", ->
+            publisher.publish("event1")
+
+            sinon.assert.calledOnce(listener)
+
+        it "publishes the second event correctly", ->
+            publisher.publish("event2")
+
+            sinon.assert.calledOnce(listener)
+
+        it "publishes the third event correctly", ->
+            publisher.publish("event3")
+
+            sinon.assert.calledOnce(listener)
+
+        it "unsubscribes from two events at once correctly, when passed the listener explicitly", ->
+            emitter.off("event2 event3", listener)
+            publisher.publish("event2")
+            publisher.publish("event3")
+
+            sinon.assert.notCalled(listener)
+
+        it "unsubscribes from two events at once correctly, when doing blanket unsubscription", ->
+            emitter.off("event2 event3")
+            publisher.publish("event2")
+            publisher.publish("event3")
+
+            sinon.assert.notCalled(listener)
+
     describe "when a hash object mapping event names to listeners is used for subscription", ->
         hash = null
 
