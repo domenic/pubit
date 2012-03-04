@@ -38,7 +38,7 @@ Aren't you being paranoid?
 
 There's [some argument][1] as to what role encapsulation has to play in JavaScript. Some might say, “if you don't want the event to be emitted outside the emitter … don't emit the event outside the emitter.”
 
-But encapsulation isn't about being paranoid. It's about _hiding complexity_: exposing a solution, without requiring the consumer to grok the gory details of the problem. An emitter by itself is simple and easy to interface with, but when you add nobs for publishing or introspection, you're no longer solving a problem, but instead creating option paralysis and fragility. Someone should be able to understand that an object emits events, without worrying about who could be publishing those events in the first place.
+But encapsulation isn't about being paranoid. It's about _hiding complexity_: exposing a solution, without requiring the consumer to grok the gory details of the problem. An emitter by itself is simple and easy to interface with, but when you add knobs for publishing or introspection, you're no longer solving a problem, but instead creating option paralysis and fragility. Someone should be able to understand that an object emits events, without worrying about who could be publishing those events in the first place.
 
 Pubit is [ポカヨケ][2].
 
