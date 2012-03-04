@@ -55,7 +55,7 @@ More docs and examples
 
 [1]: https://mail.mozilla.org/pipermail/es-discuss/2011-November/017872.html
 [2]: http://blog.ploeh.dk/2011/05/24/PokayokeDesignFromSmellToFragrance.aspx
-[3]: https://github.com/DomenicDenicola/pubit/wiki/Simple-Example
-[4]: https://github.com/DomenicDenicola/pubit/wiki/Listener-Helper-Examples
-[5]: https://github.com/DomenicDenicola/pubit/wiki/API-Reference
-[6]: https://github.com/DomenicDenicola/pubit/tree/master/test
+[3]: https://github.com/domenic/pubit/wiki/Simple-Example
+[4]: https://github.com/domenic/pubit/wiki/Listener-Helper-Examples
+[5]: https://github.com/domenic/pubit/wiki/API-Reference
+[6]: https://github.com/domenic/pubit/tree/master/test
