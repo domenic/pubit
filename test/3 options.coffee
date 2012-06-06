@@ -58,27 +58,38 @@ describe "Publisher options", ->
                 next()
 
     describe "events", ->
-        beforeEach ->
-            publisher = new Publisher(events: ["event1", "event2"])
-            emitter = publisher.emitter
+        testEvents = () ->
+            it "should publish the supplied events as usual", ->
+                listener1 = sinon.spy()
+                listener2 = sinon.spy()
+                emitter.on("event1", listener1)
+                emitter.on("event2", listener2)
 
-        it "should publish the supplied events as usual", ->
-            listener1 = sinon.spy()
-            listener2 = sinon.spy()
-            emitter.on("event1", listener1)
-            emitter.on("event2", listener2)
+                publisher.publish("event1")
+                publisher.publish("event2")
 
-            publisher.publish("event1")
-            publisher.publish("event2")
+                listener1.should.have.been.called
+                listener2.should.have.been.called
 
-            listener1.should.have.been.called
-            listener2.should.have.been.called
+            it "should throw an error upon attempting to subscribe to an unknown event", ->
+                (-> emitter.on("unknownEvent", ->)).should.throw()
 
-        it "should throw an error upon attempting to subscribe to an unknown event", ->
-            (-> emitter.on("unknownEvent", ->)).should.throw()
+            it "should throw an error upon attempting to publish an unknown event", ->
+                (-> publisher.publish("unknownEvent")).should.throw()
 
-        it "should throw an error upon attempting to publish an unknown event", ->
-            (-> publisher.publish("unknownEvent")).should.throw()
+        describe "as an explicit option", ->
+            beforeEach ->
+                publisher = new Publisher(events: ["event1", "event2"])
+                emitter = publisher.emitter
+
+            testEvents()
+
+        describe "used in place of options", ->
+            beforeEach ->
+                publisher = new Publisher(["event1", "event2"])
+                emitter = publisher.emitter
+
+            testEvents()
 
     it "should be validated", ->
         (-> new Publisher(null)).should.throw(TypeError)
