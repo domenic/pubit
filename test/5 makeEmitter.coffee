@@ -18,15 +18,15 @@ describe "makeEmitter", ->
         target.on("event3", listener3)
 
         publish("event1")
-        sinon.assert.called(listener1)
+        listener1.should.have.been.called
 
         publish("event2")
         publish("event2")
-        sinon.assert.calledOnce(listener2)
+        listener2.should.have.been.calledOnce
 
         target.off("event3")
         publish("event3")
-        sinon.assert.notCalled(listener3)
+        listener3.should.not.have.been.called
 
     it "should mixin the emitter methods as non-enumerable properties", ->
         pubit.makeEmitter(target)
@@ -50,8 +50,8 @@ describe "makeEmitter", ->
         (-> target.on("anotherEvent")).should.throw()
 
         publish("event")
-        sinon.assert.notCalled(listener)
+        listener.should.not.have.been.called
         process.nextTick ->
-            sinon.assert.called(listener)
-            sinon.assert.calledWith(onListenerError, error)
+            listener.should.have.been.called
+            onListenerError.should.have.been.calledWith(error)
             next()

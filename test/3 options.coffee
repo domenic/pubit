@@ -20,7 +20,7 @@ describe "Publisher options", ->
 
             process.nextTick ->
                 process.listeners("uncaughtException").push(originalOnUncaughtException)
-                sinon.assert.calledWith(onUncaughtException, error)
+                onUncaughtException.should.have.been.calledWith(error)
                 next()
 
         it "should deliver errors thrown by listeners to the supplied callback", ->
@@ -33,7 +33,7 @@ describe "Publisher options", ->
 
             publisher.publish("eventName")
 
-            sinon.assert.calledWith(onListenerError, error)
+            onListenerError.should.have.been.calledWith(error)
 
     describe "async", ->
         beforeEach ->
@@ -49,12 +49,12 @@ describe "Publisher options", ->
             publisher.publish("event1")
             publisher.publish("event2")
 
-            sinon.assert.notCalled(listener1)
-            sinon.assert.notCalled(listener2)
+            listener1.should.not.have.been.called
+            listener2.should.not.have.been.called
 
             process.nextTick ->
-                sinon.assert.called(listener1)
-                sinon.assert.called(listener2)
+                listener1.should.have.been.called
+                listener2.should.have.been.called
                 next()
 
     describe "events", ->
@@ -71,8 +71,8 @@ describe "Publisher options", ->
             publisher.publish("event1")
             publisher.publish("event2")
 
-            sinon.assert.called(listener1)
-            sinon.assert.called(listener2)
+            listener1.should.have.been.called
+            listener2.should.have.been.called
 
         it "should throw an error upon attempting to subscribe to an unknown event", ->
             (-> emitter.on("unknownEvent", ->)).should.throw()

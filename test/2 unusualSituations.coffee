@@ -25,17 +25,17 @@ describe "Publisher/emitter in unusual situations", ->
         it "should call all listeners when the event is published once", ->
             publisher.publish("eventName")
 
-            sinon.assert.calledOnce(normalListener1)
-            sinon.assert.calledOnce(normalListener2)
-            sinon.assert.calledOnce(selfRemovingListener)
+            normalListener1.should.have.been.calledOnce
+            normalListener2.should.have.been.calledOnce
+            selfRemovingListener.should.have.been.calledOnce
 
         it "should only call the normal listeners when the event is published a second time", ->
             publisher.publish("eventName")
             publisher.publish("eventName")
 
-            normalListener1.callCount.should.equal(2)
-            normalListener2.callCount.should.equal(2)
-            selfRemovingListener.callCount.should.equal(1)
+            normalListener1.should.have.been.calledTwice
+            normalListener2.should.have.been.calledTwice
+            selfRemovingListener.should.have.been.calledOnce
 
     describe "when an event has been subscribed to by two normal listeners plus a listener that throws an error", ->
         normalListener1 = null
@@ -57,9 +57,9 @@ describe "Publisher/emitter in unusual situations", ->
         it "should call all listeners when the event is published, despite the error", ->
             publisher.publish("eventName")
             
-            sinon.assert.calledOnce(normalListener1)
-            sinon.assert.calledOnce(normalListener2)
-            sinon.assert.calledOnce(errorThrowingListener)
+            normalListener1.should.have.been.calledOnce
+            normalListener2.should.have.been.calledOnce
+            errorThrowingListener.should.have.been.calledOnce
 
     it 'gracefully deals with events named "hasOwnProperty"', ->
         listener = sinon.spy()
@@ -67,7 +67,7 @@ describe "Publisher/emitter in unusual situations", ->
         emitter.on("hasOwnProperty", listener)
         publisher.publish("hasOwnProperty")
 
-        sinon.assert.calledOnce(listener)
+        listener.should.have.been.calledOnce
 
     it 'gracefully deals with events named "__proto__"', ->
         listener = sinon.spy()
@@ -75,4 +75,4 @@ describe "Publisher/emitter in unusual situations", ->
         emitter.on("__proto__", listener)
         publisher.publish("__proto__")
 
-        sinon.assert.calledOnce(listener)
+        listener.should.have.been.calledOnce

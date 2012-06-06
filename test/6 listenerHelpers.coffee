@@ -27,32 +27,32 @@ describe "Listener-creating helpers", ->
 
             # Three calls to the throttled listener result in zero calls to the aggregate listener after 99 ms.
             clock.tick(99)
-            sinon.assert.notCalled(aggregateListener)
+            aggregateListener.should.not.have.been.called
 
             # But they do get aggregated into one call to the aggregate listener after 101 ms.
             clock.tick(2)
-            sinon.assert.calledOnce(aggregateListener)
+            aggregateListener.should.have.been.calledOnce
 
             # If there are no further calls in the interim, nothing should happen by the 201 ms mark.
             clock.tick(100)
-            sinon.assert.calledOnce(aggregateListener)
+            aggregateListener.should.have.been.calledOnce
 
             # Then, a call at the 201 ms mark should not immediately result in a second call to the aggregate listener.
             throttledListener()
-            sinon.assert.calledOnce(aggregateListener)
+            aggregateListener.should.have.been.calledOnce
 
             # Even after 50 ms have gone by (251 ms mark).
             clock.tick(50)
             throttledListener()
-            sinon.assert.calledOnce(aggregateListener)
+            aggregateListener.should.have.been.calledOnce
 
             # But by the 301 ms mark, the previous calls result in a second call to the aggregate listener.
             clock.tick(50)
-            sinon.assert.calledTwice(aggregateListener)
+            aggregateListener.should.be.calledTwice
 
             # By the 401 ms mark, no further calls to the aggregate listener have been made.
             clock.tick(100)
-            sinon.assert.calledTwice(aggregateListener)
+            aggregateListener.should.be.calledTwice
 
         it "should aggregate the arguments of calls made to the throttled listener", ->
             throttledListener(1)
@@ -62,12 +62,12 @@ describe "Listener-creating helpers", ->
             throttledListener(3)
             clock.tick(61)
 
-            sinon.assert.calledWithExactly(aggregateListener, [1, 2, 3])
+            aggregateListener.should.have.been.calledWithExactly([1, 2, 3])
 
             throttledListener("A")
             clock.tick(101)
 
-            sinon.assert.calledWithExactly(aggregateListener, ["A"])
+            aggregateListener.should.have.been.calledWithExactly(["A"])
 
         describe "with the asap parameter set to true", ->
             beforeEach ->
@@ -76,14 +76,14 @@ describe "Listener-creating helpers", ->
             it "should call the aggregate listener on the next turn with the first value", (next) ->
                 throttledListener(1)
                 
-                # Should not be called synchronously, for consistency: throttledListener always returns a function that
+                # should.not.have.been.called synchronously, for consistency: throttledListener always returns a function that
                 # executes in a future turn of the event loop. It also allows us to aggregate all values that happen in
                 # this initial turn, as shown in the next test.
-                sinon.assert.notCalled(aggregateListener)
+                aggregateListener.should.not.have.been.called
 
                 # After a turn of the event loop, it's been called.
                 process.nextTick ->
-                    sinon.assert.calledWithExactly(aggregateListener, [1])
+                    aggregateListener.should.have.been.calledWithExactly([1])
                     next()
 
             it "should call the aggregate listener once with all initial values, then later as usual", (next) ->
@@ -91,10 +91,10 @@ describe "Listener-creating helpers", ->
                 throttledListener(2)
                 throttledListener(3)
 
-                sinon.assert.notCalled(aggregateListener)
+                aggregateListener.should.not.have.been.called
 
                 process.nextTick ->
-                    sinon.assert.calledWithExactly(aggregateListener, [1, 2, 3])
+                    aggregateListener.should.have.been.calledWithExactly([1, 2, 3])
 
                     throttledListener("A")
                     clock.tick(20)
@@ -102,7 +102,7 @@ describe "Listener-creating helpers", ->
                     clock.tick(20)
                     throttledListener("C")
                     clock.tick(61)
-                    sinon.assert.calledWithExactly(aggregateListener, ["A", "B", "C"])
+                    aggregateListener.should.have.been.calledWithExactly(["A", "B", "C"])
 
                     next()
 
@@ -119,37 +119,37 @@ describe "Listener-creating helpers", ->
 
             # Three calls to the debounced listener result in zero calls to the aggregate listener after 99 ms.
             clock.tick(99)
-            sinon.assert.notCalled(aggregateListener)
+            aggregateListener.should.not.have.been.called
 
             # But they do get aggregated into one call to the aggregate listener after 101 ms.
             clock.tick(2)
-            sinon.assert.calledOnce(aggregateListener)
+            aggregateListener.should.have.been.calledOnce
 
             # If there are no further calls in the interim, nothing should happen by the 201 ms mark.
             clock.tick(100)
-            sinon.assert.calledOnce(aggregateListener)
+            aggregateListener.should.have.been.calledOnce
 
             # Then, calling at 50-ms intervals (251 ms, 301 ms, 351 ms, 401 ms) should not result in any calls.
             # (This is the main difference between throttling and debouncing.)
             debouncedListener()
             clock.tick(50)
-            sinon.assert.calledOnce(aggregateListener)
+            aggregateListener.should.have.been.calledOnce
 
             debouncedListener()
             clock.tick(50)
-            sinon.assert.calledOnce(aggregateListener)
+            aggregateListener.should.have.been.calledOnce
 
             debouncedListener()
             clock.tick(50)
-            sinon.assert.calledOnce(aggregateListener)
+            aggregateListener.should.have.been.calledOnce
 
             debouncedListener()
             clock.tick(50)
-            sinon.assert.calledOnce(aggregateListener)
+            aggregateListener.should.have.been.calledOnce
 
             # But, if we wait another 50 ms (451 ms mark), then the aggregate listener gets called.
             clock.tick(50)
-            sinon.assert.calledTwice(aggregateListener)
+            aggregateListener.should.be.calledTwice
 
         it "should aggregate the arguments of calls made to the debounced listener", ->
             debouncedListener(1)
@@ -159,12 +159,12 @@ describe "Listener-creating helpers", ->
             debouncedListener(3)
             clock.tick(101)
             
-            sinon.assert.calledWithExactly(aggregateListener, [1, 2, 3])
+            aggregateListener.should.have.been.calledWithExactly([1, 2, 3])
 
             debouncedListener("A")
             clock.tick(101)
 
-            sinon.assert.calledWithExactly(aggregateListener, ["A"])
+            aggregateListener.should.have.been.calledWithExactly(["A"])
 
         describe "with the asap parameter set to true", ->
             beforeEach ->
@@ -173,14 +173,14 @@ describe "Listener-creating helpers", ->
             it "should call the aggregate listener on the next turn with the first value", (next) ->
                 debouncedListener(1)
                 
-                # Should not be called synchronously, for consistency: debouncedListener always returns a function that
+                # should.not.have.been.called synchronously, for consistency: debouncedListener always returns a function that
                 # executes in a future turn of the event loop. It also allows us to aggregate all values that happen in
                 # this initial turn, as shown in the next test.
-                sinon.assert.notCalled(aggregateListener)
+                aggregateListener.should.not.have.been.called
 
                 # After a turn of the event loop, it's been called.
                 process.nextTick ->
-                    sinon.assert.calledWithExactly(aggregateListener, [1])
+                    aggregateListener.should.have.been.calledWithExactly([1])
                     next()
 
             it "should call the aggregate listener once with all initial values, then later as usual", (next) ->
@@ -188,10 +188,10 @@ describe "Listener-creating helpers", ->
                 debouncedListener(2)
                 debouncedListener(3)
 
-                sinon.assert.notCalled(aggregateListener)
+                aggregateListener.should.not.have.been.called
 
                 process.nextTick ->
-                    sinon.assert.calledWithExactly(aggregateListener, [1, 2, 3])
+                    aggregateListener.should.have.been.calledWithExactly([1, 2, 3])
 
                     debouncedListener("A")
                     clock.tick(20)
@@ -199,6 +199,6 @@ describe "Listener-creating helpers", ->
                     clock.tick(20)
                     debouncedListener("C")
                     clock.tick(101)
-                    sinon.assert.calledWithExactly(aggregateListener, ["A", "B", "C"])
+                    aggregateListener.should.have.been.calledWithExactly(["A", "B", "C"])
 
                     next()
