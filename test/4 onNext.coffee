@@ -1,5 +1,3 @@
-sinon = require("sinon")
-
 Publisher = require("../lib/pubit").Publisher
 
 describe "emitter.onNext", ->

@@ -1,6 +1,3 @@
-require("chai").should()
-sinon = require("sinon")
-
 pubit = require("../lib/pubit")
 
 describe "Listener-creating helpers", ->

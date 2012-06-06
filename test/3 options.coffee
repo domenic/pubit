@@ -1,6 +1,3 @@
-sinon = require("sinon")
-expect = require("chai").expect
-
 Publisher = require("../lib/pubit").Publisher
 
 describe "Publisher options", ->
@@ -78,21 +75,21 @@ describe "Publisher options", ->
             sinon.assert.called(listener2)
 
         it "should throw an error upon attempting to subscribe to an unknown event", ->
-            expect(-> emitter.on("unknownEvent", ->)).to.throw()
+            (-> emitter.on("unknownEvent", ->)).should.throw()
 
         it "should throw an error upon attempting to publish an unknown event", ->
-            expect(-> publisher.publish("unknownEvent")).to.throw()
+            (-> publisher.publish("unknownEvent")).should.throw()
 
     it "should be validated", ->
-        expect(-> new Publisher(null)).to.throw(TypeError)
-        expect(-> new Publisher(5)).to.throw(TypeError)
-        expect(-> new Publisher("hi")).to.throw(TypeError)
-        expect(-> new Publisher(->)).to.throw(TypeError)
+        (-> new Publisher(null)).should.throw(TypeError)
+        (-> new Publisher(5)).should.throw(TypeError)
+        (-> new Publisher("hi")).should.throw(TypeError)
+        (-> new Publisher(->)).should.throw(TypeError)
 
-        expect(-> new Publisher(onListenerError: null)).to.throw(TypeError)
-        expect(-> new Publisher(onListenerError: {})).to.throw(TypeError)
-        expect(-> new Publisher(onListenerError: 5)).to.throw(TypeError)
+        (-> new Publisher(onListenerError: null)).should.throw(TypeError)
+        (-> new Publisher(onListenerError: {})).should.throw(TypeError)
+        (-> new Publisher(onListenerError: 5)).should.throw(TypeError)
 
-        expect(-> new Publisher(events: null)).to.throw(TypeError)
-        expect(-> new Publisher(events: {})).to.throw(TypeError)
-        expect(-> new Publisher(events: 5)).to.throw(TypeError)
+        (-> new Publisher(events: null)).should.throw(TypeError)
+        (-> new Publisher(events: {})).should.throw(TypeError)
+        (-> new Publisher(events: 5)).should.throw(TypeError)

@@ -1,7 +1,3 @@
-sinon = require("sinon")
-expect = require("chai").expect
-should = require("chai").should()
-
 pubit = require("../lib/pubit")
 
 describe "makeEmitter", ->
@@ -50,8 +46,8 @@ describe "makeEmitter", ->
         errorThrowingListener = -> throw error
         target.on("event", errorThrowingListener)
 
-        expect(-> publish("anotherEvent")).to.throw()
-        expect(-> target.on("anotherEvent")).to.throw()
+        (-> publish("anotherEvent")).should.throw()
+        (-> target.on("anotherEvent")).should.throw()
 
         publish("event")
         sinon.assert.notCalled(listener)

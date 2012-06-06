@@ -1,6 +1,3 @@
-require("chai").should()
-sinon = require("sinon")
-
 Publisher = require("../lib/pubit").Publisher
 
 describe "Publisher/emitter in unusual situations", ->
