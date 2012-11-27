@@ -10,10 +10,11 @@ describe "Publisher/emitter under normal usage", ->
 
     describe "when an event has been subscribed to", ->
         listener = null
+        unsubscribe = null
 
         beforeEach ->
             listener = sinon.spy()
-            emitter.on("eventName", listener)
+            unsubscribe = emitter.on("eventName", listener)
 
         it "should call the subscribing listener when the event is published", ->
             publisher.publish("eventName")
@@ -32,6 +33,12 @@ describe "Publisher/emitter under normal usage", ->
 
         it "should not call the listener when publishing after unsubscribing from the event", ->
             emitter.off("eventName", listener)
+            publisher.publish("eventName")
+
+            listener.should.not.have.been.called
+
+        it "should not call the listener when publishing after unsubscribing with the function 'on' returns", ->
+            unsubscribe()
             publisher.publish("eventName")
 
             listener.should.not.have.been.called
@@ -102,10 +109,11 @@ describe "Publisher/emitter under normal usage", ->
     describe "when three events are subscribed to in one call", ->
         events = ["event1", "event2", "event3"]
         listener = null
+        unsubscribe = null
 
         beforeEach ->
             listener = sinon.spy()
-            emitter.on(events.join(" "), listener)
+            unsubscribe = emitter.on(events.join(" "), listener)
 
         it "publishes the first event correctly", ->
             publisher.publish("event1")
@@ -136,15 +144,23 @@ describe "Publisher/emitter under normal usage", ->
 
             listener.should.not.have.been.called
 
+        it "unsubscribes from two events at once, when calling the returned unsubscriber", ->
+            unsubscribe()
+            publisher.publish("event2")
+            publisher.publish("event3")
+
+            listener.should.not.have.been.called
+
     describe "when a hash object mapping event names to listeners is used for subscription", ->
         hash = null
+        unsubscribe = null
 
         beforeEach ->
             hash = 
                 event1: sinon.spy()
                 event2: sinon.spy()
                 event3: sinon.spy()
-            emitter.on(hash)
+            unsubscribe = emitter.on(hash)
 
         it "publishes events correctly", ->
             publisher.publish("event1")
@@ -164,3 +180,15 @@ describe "Publisher/emitter under normal usage", ->
             hash.event1.should.not.have.been.called
             hash.event2.should.not.have.been.called
             hash.event3.should.not.have.been.called
+
+        it "does not publish events when they are unsubscribed with the returned function", ->
+            unsubscribe()
+
+            publisher.publish("event1")
+            publisher.publish("event2")
+            publisher.publish("event3")
+
+            hash.event1.should.not.have.been.called
+            hash.event2.should.not.have.been.called
+            hash.event3.should.not.have.been.called
+
