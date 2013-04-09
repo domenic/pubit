@@ -1,4 +1,4 @@
-pubit = require("../lib/pubit")
+pubit = require("../lib/pubit-as-promised")
 
 describe "Listener-creating helpers", ->
     publisher = null

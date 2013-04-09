@@ -1,4 +1,4 @@
-Publisher = require("../lib/pubit").Publisher
+Publisher = require("../lib/pubit-as-promised").Publisher
 
 describe "Publisher/emitter in unusual situations", ->
     publisher = null
@@ -55,8 +55,8 @@ describe "Publisher/emitter in unusual situations", ->
             emitter.on("eventName", normalListener2)
 
         it "should call all listeners when the event is published, despite the error", ->
-            publisher.publish("eventName")
-            
+            publisher.publish("eventName").catch(->)
+
             normalListener1.should.have.been.calledOnce
             normalListener2.should.have.been.calledOnce
             errorThrowingListener.should.have.been.calledOnce

@@ -1,4 +1,4 @@
-Publisher = require("../lib/pubit").Publisher
+Publisher = require("../lib/pubit-as-promised").Publisher
 
 describe "Publisher options", ->
     publisher = null
@@ -16,7 +16,7 @@ describe "Publisher options", ->
             originalOnUncaughtException = process.listeners("uncaughtException").pop()
             process.once("uncaughtException", onUncaughtException)
 
-            publisher.publish("eventName")
+            publisher.publish("eventName").catch(->)
 
             process.nextTick ->
                 process.listeners("uncaughtException").push(originalOnUncaughtException)
@@ -31,7 +31,7 @@ describe "Publisher options", ->
             error = new Error("Boo")
             emitter.on("eventName", -> throw error)
 
-            publisher.publish("eventName")
+            publisher.publish("eventName").catch(->)
 
             onListenerError.should.have.been.calledWith(error)
 

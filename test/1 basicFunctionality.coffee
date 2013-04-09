@@ -1,4 +1,4 @@
-Publisher = require("../lib/pubit").Publisher
+Publisher = require("../lib/pubit-as-promised").Publisher
 
 describe "Publisher/emitter under normal usage", ->
     publisher = null

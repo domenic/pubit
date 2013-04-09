@@ -1,4 +1,4 @@
-pubit = require("../lib/pubit")
+pubit = require("../lib/pubit-as-promised")
 
 describe "makeEmitter", ->
     target = null
@@ -46,10 +46,10 @@ describe "makeEmitter", ->
         errorThrowingListener = -> throw error
         target.on("event", errorThrowingListener)
 
-        (-> publish("anotherEvent")).should.throw()
+        (-> publish("anotherEvent").catch(->)).should.throw()
         (-> target.on("anotherEvent")).should.throw()
 
-        publish("event")
+        publish("event").catch(->)
         listener.should.not.have.been.called
         process.nextTick ->
             listener.should.have.been.called
