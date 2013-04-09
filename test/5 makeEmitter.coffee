@@ -1,4 +1,4 @@
-pubit = require("../lib/pubit")
+pubit = require("..")
 
 describe "makeEmitter", ->
     target = null
@@ -49,7 +49,7 @@ describe "makeEmitter", ->
         (-> publish("anotherEvent")).should.throw()
         (-> target.on("anotherEvent")).should.throw()
 
-        publish("event")
+        publish("event").catch(->)
         listener.should.not.have.been.called
         process.nextTick ->
             listener.should.have.been.called

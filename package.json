@@ -1,26 +1,42 @@
 {
-  "name": "pubit",
-  "description": "Responsible publish/subscribe. Hide the event publisher, only exposing the event emitter.",
+  "name": "pubit-as-promised",
+  "description": "Responsible publish/subscribe not enhanced with Q promise goodness! Hide the event publisher, only exposing the event emitter.",
   "keywords": [
     "pubsub",
     "pub/sub",
     "eventemitter",
-    "events"
+    "events",
+    "q",
+    "promise",
+    "promises",
+    "promises-a",
+    "promises-a-plus",
+    "deferred",
+    "future",
+    "async",
+    "flow control",
+    "fluent",
+    "browser",
+    "node"
   ],
-  "version": "1.2.1",
-  "author": "Domenic Denicola <domenic@domenicdenicola.com> (http://domenicdenicola.com)",
-  "license": "WTFPL",
+  "version": "1.0.0",
+  "author": "NobleJS",
+   "contributors": [
+        "Domenic Denicola <domenic@domenicdenicola.com> (http://domenicdenicola.com)",
+        "Donavon West <github@donavon.com> (http://donavon.com)"
+    ],
+  "license": "MIT",
   "repository": {
     "type": "git",
-    "url": "https://github.com/domenic/pubit"
+    "url": "https://github.com/NobleJS/pubit-as-promised"
   },
   "bugs": {
-    "url": "http://github.com/domenic/pubit/issues"
+    "url": "http://github.com/NobleJS/pubit-as-promised/issues"
   },
   "directories": {
     "lib": "./lib"
   },
-  "main": "./lib/pubit.js",
+  "main": "./lib/pubit-as-promised.js",
   "scripts": {
     "test": "mocha",
     "lint": "jshint --show-non-errors lib"
@@ -29,7 +45,8 @@
     "node": "*"
   },
   "dependencies": {
-    "dict": "1"
+    "dict": "1",
+    "q": ">= 0.8.12"
   },
   "devDependencies": {
     "jshint": ">= 0.7.1",
