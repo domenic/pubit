@@ -46,7 +46,7 @@ describe "makeEmitter", ->
         errorThrowingListener = -> throw error
         target.on("event", errorThrowingListener)
 
-        (-> publish("anotherEvent").catch(->)).should.throw()
+        (-> publish("anotherEvent")).should.throw()
         (-> target.on("anotherEvent")).should.throw()
 
         publish("event").catch(->)
