@@ -1,4 +1,4 @@
-Publisher = require("../lib/pubit-as-promised").Publisher
+Publisher = require("..").Publisher
 
 describe "Emitter argument validation", ->
     publisher = null

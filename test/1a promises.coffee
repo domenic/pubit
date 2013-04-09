@@ -1,4 +1,4 @@
-﻿Publisher = require("../lib/pubit-as-promised").Publisher
+﻿Publisher = require("..").Publisher
 Q = require("q")
 
 describe "Promises", ->

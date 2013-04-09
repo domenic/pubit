@@ -1,4 +1,4 @@
-Publisher = require("../lib/pubit-as-promised").Publisher
+Publisher = require("..").Publisher
 
 describe "Publisher argument validation", ->
     publisher = null
