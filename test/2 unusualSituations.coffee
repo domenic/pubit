@@ -1,4 +1,4 @@
-Publisher = require("../lib/pubit").Publisher
+Publisher = require("..").Publisher
 
 describe "Publisher/emitter in unusual situations", ->
     publisher = null

@@ -1,4 +1,4 @@
-pubit = require("../lib/pubit")
+pubit = require("..")
 
 describe "makeEmitter", ->
     target = null

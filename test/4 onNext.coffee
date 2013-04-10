@@ -1,4 +1,4 @@
-Publisher = require("../lib/pubit").Publisher
+Publisher = require("..").Publisher
 
 describe "emitter.onNext", ->
     publisher = null
